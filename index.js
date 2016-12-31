@@ -46,7 +46,9 @@ function createContentfulProxy(config) {
   const options = {
     target,
     changeOrigin: true,
+    xfwd: true,
     secure,
+    preserveHeaderKeyCase: true,
     headers: { Authorization: `Bearer ${token}` }
   }
 
