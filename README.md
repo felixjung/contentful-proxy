@@ -1,9 +1,4 @@
-## Description
-
-Small caching proxy service for [Contentful](http://contentful.com)'s [Content
-Delivery
-API](https://www.contentful.com/developers/docs/references/content-delivery-api/)
-(CDA) written for and using Zeit.co's [micro](https://github.com/zeit/micro).
+Small authentication and caching proxy service for [Contentful](http://contentful.com)'s [Content Delivery API](https://www.contentful.com/developers/docs/references/content-delivery-api/) (CDA) written for and using Zeit.co's [micro](https://github.com/zeit/micro). Useful for front-end's connecting to Contentful and for people who have problems with their request cap.
 
 ## Installation
 
@@ -26,12 +21,15 @@ project.
 
 ### Configuration
 
-Copy `config.json.example` to `config.json`. Specify the `accessToken` and,
-should you plan to use the Contentful Preview API (CPA), also specify the
-`previewToken`. To use the preview API set `preview` to true. To not use HTTPS
-when querying Contentful, set `secure` to `true`.
+Copy `config.json.example` to `config.json` and specify the required options listed below.
 
-By default, the proxy will use the CDA over HTTPS.
+| Option         | Note                   | Description                              |
+| -------------- | ---------------------- | ---------------------------------------- |
+| `accessToken`  | **String** *required*  | The space's access token for the production CDA. |
+| `previewToken` | **String** *optional*  | The space's access token for the CPA.    |
+| `preview`      | **Boolean** *optional* | Should the CPA be proxied? If set to true, make sure the `previewToken` is specified. |
+| `spaceId`      | **String** *optional*  | The ID of you space. If specified, you won't have to set `/spaces/{spaceId}` in your requests. |
+| `secure`       | **Boolean** *optional* | Should the proxy use HTTPS and verify Contentful's SSL certificate. |
 
 ### Start
 
