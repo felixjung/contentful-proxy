@@ -49,6 +49,7 @@ function createContentfulProxy(config) {
     changeOrigin: true,
     xfwd: true,
     secure,
+    prependPath: true,
     preserveHeaderKeyCase: true,
     headers: { Authorization: `Bearer ${token}` }
   }
