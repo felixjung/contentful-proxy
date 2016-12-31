@@ -1,8 +1,9 @@
+const LRUCache = require('lru-cache')
 const httpProxy = require('http-proxy')
 const { send, json, sendError } = require('micro')
 const config = require('./config.json')
 
-let cache = {}
+const cache = new LRUCache({ maxAge: 1000 * 60 * 60 * 24 }) // cache for 1 day
 
 function createProxyFn(config) {
   const proxy = createContentfulProxy(config)
@@ -14,8 +15,8 @@ function createProxyFn(config) {
       return
     }
 
-    const cached = cache[req.url]
-    if (cached) {
+    if (cache.has(req.url)) {
+      const cached = cache.get(req.url)
       addHeaders(res, cached.headers)
       send(res, 200, cached.data)
       return
@@ -34,7 +35,7 @@ function addHeaders(res, headers) {
 }
 
 function clearCache() {
-  cache = {}
+  cache.reset()
 }
 
 function createContentfulProxy(config) {
@@ -57,7 +58,7 @@ function createContentfulProxy(config) {
 async function cacheResponse(proxyRes, { url: key }) {
   const { status, statusText, headers } = proxyRes
   const data = await json(proxyRes)
-  cache[key] = { status, statusText, headers, data }
+  cache.set(key, { status, statusText, headers, data })
 }
 
 function getAuthToken({ accessToken, previewToken, preview = false }) {

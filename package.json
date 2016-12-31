@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "http-proxy": "^1.16.2",
+    "lru-cache": "^4.0.2",
     "micro": "^6.1.0"
   },
   "devDependencies": {
@@ -22,7 +23,10 @@
     "space": true,
     "semicolon": false,
     "rules": {
-      "object-curly-spacing": ["error", "always"]
+      "object-curly-spacing": [
+        "error",
+        "always"
+      ]
     }
   }
 }
