@@ -39,6 +39,7 @@ function clearCache() {
 }
 
 function createContentfulProxy(config) {
+  const prependPath = config.hasOwnProperty('spaceId')
   const target = getContentfulUrl(config)
   const token = getAuthToken(config)
   const secure = Boolean(config.secure)
@@ -73,10 +74,11 @@ function getAuthToken({ accessToken, previewToken, preview = false }) {
   return preview ? previewToken : accessToken
 }
 
-function getContentfulUrl({ preview = false, secure = true }) {
+function getContentfulUrl({ preview = false, secure = true, spaceId = '' }) {
+  const path = spaceId ? `spaces/${spaceId}` : ''
   const protocol = secure ? 'https' : 'http'
   const host = preview ? 'preview.contentful.com' : 'cdn.contentful.com'
-  return `${protocol}://${host}`
+  return `${protocol}://${host}/${path}`
 }
 
 function handleError(err, req, res) {
